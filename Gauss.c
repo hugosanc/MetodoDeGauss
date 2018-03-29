@@ -42,6 +42,25 @@ void imprime( double **M, int dim)
 	}	
 }
 
+double **triangulacao( double **M, int dim)
+{
+        double l;
+        int i,j,k;
+        for(j=0;j<dim+1;j++)
+        {      
+		for(i=0;i<dim;i++)
+		{
+			if(i>j)
+			{
+	                	l = M[i][j]/M[j][j];       
+                		for(k=0;k<dim+1;k++)
+                        		M[i][k] -= l*M[j][k]; 
+        		} 
+		}
+	}       
+        return M;
+}
+
 void main(int argc, char **argv)
 {
 	double **L;
@@ -49,5 +68,9 @@ void main(int argc, char **argv)
 
 	L = ler(argv[1],&dim);
 	imprime(L,dim);
+
+	printf("\nTriagulação\n");
+        L = triangulacao(L,dim);
+        imprime(L,dim);
    
 }
