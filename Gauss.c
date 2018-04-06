@@ -61,16 +61,38 @@ double **triangulacao( double **M, int dim)
         return M;
 }
 
+void subreversa( double **M, double *x, int dim)
+{
+	int i,k;
+	double sum;
+
+	for( i=dim-1; i>=0; i-- )
+	{
+		sum=0;
+		for( k=i+1; k<dim; k++)
+			sum += M[i][k]* x[k];
+
+		x[i] = ( M[i][dim] - sum )/M[i][i];
+	}
+}	
+
 void main(int argc, char **argv)
 {
-	double **L;
-	int dim;
+	double **L, *raiz;
+	int dim,i;
 
 	L = ler(argv[1],&dim);
+	printf("\nMatriz lida do arquivo\n");
 	imprime(L,dim);
 
 	printf("\nTriagulação\n");
         L = triangulacao(L,dim);
         imprime(L,dim);
-   
+	
+	raiz = malloc( dim* sizeof(double));
+	subreversa(L,raiz,dim);
+	printf("\nRaizes");
+	for( i=0; i<dim; i++)
+		printf("\nv[%d]: %g",i,raiz[i]);
+	puts(" ");   
 }
